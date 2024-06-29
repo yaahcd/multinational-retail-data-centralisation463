@@ -33,8 +33,16 @@ class DatabaseConnector():
         tables_df = pd.read_sql(query, engine)
 
         return tables_df
+    
+    def upload_to_db(self, data, tableName):
+        creds = self.read_db_creds()
+        engine = create_engine(f"{creds["LOCAL_DATABASE_TYPE"]}+{creds["LOCAL_DBAPI"]}://{creds["LOCAL_USER"]}:{creds["LOCAL_PASSWORD"]}@{creds["LOCAL_HOST"]}:{creds["LOCAL_PORT"]}/{creds["LOCAL_DATABASE"]}")
+        engine.connect()
+        data.to_sql(tableName, engine, if_exists="replace")
+
         
 
 if __name__ == "__main__":       
     test_class = DatabaseConnector()
     print(test_class.list_db_tables())
+  
