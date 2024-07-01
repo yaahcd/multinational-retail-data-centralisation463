@@ -1,9 +1,16 @@
-from database_utils import DatabaseConnector
 import pandas as pd
 import tabula
+import requests
+from database_utils import DatabaseConnector
 from data_cleaning import DataCleaning
 # This class will work as a utility class, in it you will be creating methods that help extract data from different data sources.
 # The methods contained will be fit to extract data from a particular data source, these sources will include CSV files, an API and an S3 bucket.
+
+
+header = {"x-api-key": "yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX"}
+retrieve_store_endpoint = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/"
+retrieve_number_stores_endpoint = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores"
+
 class DataExtractor():
                                                 
     def read_rds_table(self, dbConnectorInstance, tableName):
@@ -18,12 +25,35 @@ class DataExtractor():
         data = pd.concat(data)
     
         return data
+    
+    def list_number_of_stores(self, endpoint, key):
+
+        response = requests.get(endpoint, headers=key)
+        res_json = response.json()
+
+        return res_json["number_stores"]
+
+    def retrieve_stores_data(self, num_stores, endpoint, key):
+        
+        stores_data = []
+        count = 0
+
+        while count < num_stores:
+            response = requests.get(f"{endpoint}{count}", headers=key)
+            res_json = response.json()
+            stores_data.append(res_json)
+            count = count + 1
+
+        stores_df = pd.DataFrame(stores_data)
+      
+        return stores_df
+
+
+
 
 
 test_class = DatabaseConnector()
 test_extractor = DataExtractor()
 data_cleaning = DataCleaning()
 
-result = data_cleaning.clean_card_data(test_extractor.retrieve_pdf_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf"))
 
-test_class.upload_to_db(result, "dim_card_details")
