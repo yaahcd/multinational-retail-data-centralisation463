@@ -23,3 +23,13 @@ class DataCleaning():
         ##
         return data
     
+    def clean_card_data(self, data):
+
+        data.fillna(np.nan, inplace=True)
+        data['card_number'] = data['card_number'].astype('string')
+        data['card_provider'] = data['card_provider'].astype('string')
+        data['expiry_date'] = data['expiry_date'].astype('string')
+        data['date_payment_confirmed'] = pd.to_datetime(data['date_payment_confirmed'],  errors='coerce')
+
+        return data
+    
