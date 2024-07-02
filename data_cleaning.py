@@ -47,3 +47,37 @@ class DataCleaning():
         data['continent'] = data['continent'].str.replace('eeAmerica','America')
 
         return data
+    
+    def convert_product_weights(self, value):
+
+        if 'x' in value:
+            parts = value.split("x")
+            parts = [parts[0].strip(), parts[1].replace('g', "").strip()]
+            value = int(parts[0]) * int(parts[1])
+            return str(value) + "g"
+        if 'kg' in value:
+            value = value.replace('kg','')
+            return str(float(value))
+        elif 'g' in value:
+            value = value.replace('g','')
+            return str(float(value) / 1000)
+        elif 'ml' in value:
+            value = value.replace('ml','')
+            return str(float(value) / 1000)
+        elif 'oz' in value:
+            value = value.replace('oz','')
+            return str(float(value) / 35.274)
+        
+        return value
+    
+    def clean_products_data(self, data):
+
+        data['weight'] = data['weight'].astype('string')
+        data['weight'] = data['weight'].str.replace(".", "")
+        data['weight'].fillna("0", inplace=True)
+        data.fillna(np.nan, inplace=True)
+        data.replace('NULL', np.nan, inplace=True)
+        data['date_added'] = pd.to_datetime(data['date_added'],errors='coerce')
+        data['weight'] = data['weight'].apply(self.convert_product_weights)
+
+        return data

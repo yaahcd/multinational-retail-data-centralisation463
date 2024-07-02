@@ -1,6 +1,7 @@
 import pandas as pd
 import tabula
 import requests
+import boto3
 from database_utils import DatabaseConnector
 from data_cleaning import DataCleaning
 # This class will work as a utility class, in it you will be creating methods that help extract data from different data sources.
@@ -48,6 +49,12 @@ class DataExtractor():
       
         return stores_df
 
+    def extract_from_s3(self, link):
+
+        #s3fs used by panda to handle s3 files
+        df = pd.read_csv(link)
+
+        return df
 
 
 
@@ -55,5 +62,4 @@ class DataExtractor():
 test_class = DatabaseConnector()
 test_extractor = DataExtractor()
 data_cleaning = DataCleaning()
-
 
