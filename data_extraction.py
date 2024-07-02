@@ -64,4 +64,3 @@ test_class = DatabaseConnector()
 test_extractor = DataExtractor()
 data_cleaning = DataCleaning()
 
-

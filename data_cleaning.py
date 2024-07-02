@@ -90,3 +90,10 @@ class DataCleaning():
         data.drop(columns='level_0', inplace=True)
 
         return data
+    
+    def clean_date_events_data(self, data):
+
+        data.fillna(np.nan, inplace=True)
+        data.replace('NULL', np.nan, inplace=True)
+
+        return data
