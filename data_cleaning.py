@@ -81,3 +81,12 @@ class DataCleaning():
         data['weight'] = data['weight'].apply(self.convert_product_weights)
 
         return data
+    
+    def clean_orders_data(self, data):
+
+        data.drop(columns='first_name', inplace=True)
+        data.drop(columns='last_name', inplace=True)
+        data.drop(columns='1', inplace=True)
+        data.drop(columns='level_0', inplace=True)
+
+        return data
