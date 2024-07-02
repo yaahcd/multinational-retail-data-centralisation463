@@ -51,8 +51,11 @@ class DataExtractor():
 
     def extract_from_s3(self, link):
 
-        #s3fs used by panda to handle s3 files
-        df = pd.read_csv(link)
+        if 's3://' in link:
+            #s3fs used by panda to handle s3 files
+            df = pd.read_csv(link)
+        elif 'https://' in link:
+            df = pd.read_json(link)
 
         return df
 
