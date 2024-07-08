@@ -33,12 +33,10 @@ class DataCleaning():
 
         data.fillna(np.nan, inplace=True)
         data.replace('NULL', np.nan, inplace=True)
-        data = data.reset_index(drop=True)
-        data['opening_date'] = pd.to_datetime( data['opening_date'], errors='coerce')
-        data['staff_numbers'] = pd.to_numeric( data['staff_numbers'], errors='coerce')
-        data['address'] = data['address'].astype('string')
+        data.drop(columns='lat', inplace=True)
+        data['opening_date'] = pd.to_datetime(data['opening_date'], errors='coerce')
+        data['staff_numbers'] = pd.to_numeric(data['staff_numbers'], errors='coerce')
         data['address'] = data['address'].str.replace("\n"," ")
-        data['continent'] = data['continent'].astype('string')
         data['continent'] = data['continent'].str.replace('eeEurope','Europe')
         data['continent'] = data['continent'].str.replace('eeAmerica','America')
 
@@ -50,7 +48,7 @@ class DataCleaning():
             parts = value.split("x")
             parts = [parts[0].strip(), parts[1].replace('g', "").strip()]
             value = int(parts[0]) * int(parts[1])
-            return str(value) + "g"
+            return str(float(value) / 1000)
         if 'kg' in value:
             value = value.replace('kg','')
             return str(float(value))
@@ -68,7 +66,6 @@ class DataCleaning():
     
     def clean_products_data(self, data):
 
-        data['weight'] = data['weight'].astype('string')
         data['weight'] = data['weight'].str.replace(".", "")
         data['weight'].fillna("0", inplace=True)
         data.fillna(np.nan, inplace=True)
