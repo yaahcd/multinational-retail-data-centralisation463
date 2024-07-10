@@ -85,5 +85,6 @@ class DataCleaning():
 
         data.fillna(np.nan, inplace=True)
         data.replace('NULL', np.nan, inplace=True)
+        data['timestamp'] = pd.to_datetime(data['timestamp'], errors='coerce', format='%H:%M:%S')
 
         return data
