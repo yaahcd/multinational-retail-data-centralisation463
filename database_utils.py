@@ -19,7 +19,7 @@ class DatabaseConnector():
         Initialises engine using credentials from yaml_file.
     list_db_engine()
         Lists table names from the database.
-    upload_to_db() 
+    upload_to_db(data, tableName) 
         Uploads cleaned data to local database.
     '''
     def __init__(self, yaml_file):
