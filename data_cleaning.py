@@ -25,6 +25,16 @@ class DataCleaning():
     def clean_user_data(self, data):
         '''
         Cleans user data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         #null values -- inplace modifies current df
         data.fillna(np.nan, inplace=True)
@@ -43,6 +53,16 @@ class DataCleaning():
     def clean_card_data(self, data):
         '''
         Cleans card data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         data.fillna(np.nan, inplace=True)
         data.replace('NULL', np.nan, inplace=True)
@@ -53,6 +73,16 @@ class DataCleaning():
     def clean_store_data(self, data):
         '''
         Cleans store data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         data.fillna(np.nan, inplace=True)
         data.replace('NULL', np.nan, inplace=True)
@@ -68,6 +98,16 @@ class DataCleaning():
     def convert_product_weights(self, value):
         '''
         Converts the values in the weight column from the products table to kilos.
+
+        Parameters:
+        ----------
+        value: str
+            A string containing the value to be converted.
+
+        Returns:
+        -------
+        value: str
+            A string containing the converted value.
         '''
         if 'x' in value:
             parts = value.split("x")
@@ -92,6 +132,16 @@ class DataCleaning():
     def clean_products_data(self, data):
         '''
         Cleans products data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         data['weight'] = data['weight'].str.replace(".", "")
         data['weight'].fillna("0", inplace=True)
@@ -105,6 +155,16 @@ class DataCleaning():
     def clean_orders_data(self, data):
         '''
         Cleans orders data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         data.drop(columns='first_name', inplace=True)
         data.drop(columns='last_name', inplace=True)
@@ -116,6 +176,16 @@ class DataCleaning():
     def clean_date_events_data(self, data):
         '''
         Cleans date events data and returns a DataFrame ready to be uploaded to local database.
+
+        Parameters:
+        ----------
+        data: DataFrame
+            A pandas dataFrame containing the data to be cleaned.
+
+        Returns:
+        -------
+        data: DataFrame
+            A pandas dataFrame containing the cleaned data.
         '''
         data.fillna(np.nan, inplace=True)
         data.replace('NULL', np.nan, inplace=True)
