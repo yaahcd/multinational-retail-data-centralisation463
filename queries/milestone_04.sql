@@ -1,4 +1,4 @@
---How many stores does the business have and in which countries?
+-- 01. How many stores does the business have and in which countries?
 
 SELECT country_code, COUNT(store_code) as total_no_stores 
 FROM dim_store_details 
@@ -15,7 +15,7 @@ ORDER BY total_no_stores DESC;
 
 ------------------------------------------------------------------
 
---Which locations currently have the most stores?
+-- 02. Which locations currently have the most stores?
 
 SELECT locality, COUNT(store_code) as total_no_stores 
 FROM dim_store_details 
@@ -36,7 +36,7 @@ ORDER BY total_no_stores DESC;
 
 -------------------------------------------------------------------
 
---Which months produced the largest amount of sales?
+-- 03. Which months produced the largest amount of sales?
 
 -- Round did not work for float and integer so I had to use cast to make sure the result of Sum would be numeric before applying Round
 
@@ -61,7 +61,7 @@ GROUP BY d.month;
 
 ----------------------------------------------------------------------
 
--- How many sales are coming from online?
+-- 04. How many sales are coming from online?
 
 SELECT COUNT(o.product_quantity) AS number_of_sales, SUM(o.product_quantity) AS product_quantity_count, 
 CASE
@@ -82,7 +82,7 @@ ORDER BY store_location DESC;
 -- +------------------+-------------------------+----------+
 ------------------------------------------------------------------------
 
--- What percentage of sales come through each type of store?
+-- 05. What percentage of sales come through each type of store?
 
 SELECT s.store_type, 
     ROUND(CAST(SUM(o.product_quantity * p.product_price) AS numeric), 2) AS total_sales, 
@@ -109,7 +109,7 @@ GROUP BY s.store_type;
 
 -----------------------------------------------------------------------------
 
--- Which month in each year produced the highest cost of sales?
+-- 06. Which month in each year produced the highest cost of sales?
 
 WITH total_monthly_sales AS (
 SELECT ROUND(CAST(SUM(o.product_quantity * p.product_price) AS numeric), 2) AS total_sales,
@@ -147,7 +147,7 @@ ORDER BY m.year;
 
 -----------------------------------------------------------------------------
 
--- What is our staff headcount?
+-- 07. What is our staff headcount?
 
 SELECT SUM(staff_numbers) AS total_staff_numbers, country_code
 FROM dim_store_details
@@ -164,7 +164,7 @@ ORDER BY total_staff_numbers DESC;
 
 -----------------------------------------------------------------------------
 
--- Which German store type is selling the most?
+-- 08. Which German store type is selling the most?
 
 SELECT ROUND(CAST(SUM(o.product_quantity * p.product_price) AS numeric), 2) AS total_sales, s.store_type, s.country_code
 FROM orders_table o
@@ -187,7 +187,7 @@ ORDER BY total_sales;
 
 -----------------------------------------------------------------------------
 
--- How quickly is the company making sales?
+-- 09. How quickly is the company making sales?
 
 WITH timestamp_events AS (
 SELECT TO_TIMESTAMP(CONCAT(year, '-', month, '-', day, ' ', timestamp), 'YYYY-MM-DD HH24:MI:SS') AS timestamp_event
