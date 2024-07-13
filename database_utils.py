@@ -36,16 +36,26 @@ class DatabaseConnector():
     
     def init_db_engine(self):
         '''
-        Creates engine using the credetials dictionary from read_db_creds method.
+        Creates engine using the credentials dictionary from read_db_creds method.
+
+        Returns:
+        -------
+        engine: Engine
+            An SQLAlchemy engine to connect to the database.
         '''
         creds = self.read_db_creds()
         engine = create_engine(f"postgresql+psycopg2://{creds["RDS_USER"]}:{creds["RDS_PASSWORD"]}@{creds["RDS_HOST"]}:{creds["RDS_PORT"]}/{creds["RDS_DATABASE"]}")
-
+        print(type(engine))
         return engine
 
     def list_db_tables(self):
         '''
         Lists table name from remote database.
+
+        Returns:
+        -------
+        tables_df: DataFrame
+            A pandas DataFrame.
         '''
         engine = self.init_db_engine()
        
@@ -56,7 +66,7 @@ class DatabaseConnector():
                 """
 
         tables_df = pd.read_sql(query, engine)
-
+        
         return tables_df
     
     def upload_to_db(self, data, tableName):
@@ -77,4 +87,7 @@ class DatabaseConnector():
    
 if __name__ == "__main__":       
     test_class = DatabaseConnector('db_creds.yaml')
+
+
   
+
