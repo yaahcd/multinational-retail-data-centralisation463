@@ -43,6 +43,11 @@ class DataExtractor():
             A class instance that is used to connect to the database.
         tableName: str
             The table name to retrieve data from.
+        
+        Returns:
+        -------  
+        DataFrame
+            A pandas dataFrame.
         '''
         engine = dbConnectorInstance.init_db_engine()
         with engine.connect() as connection:
@@ -56,6 +61,11 @@ class DataExtractor():
         ----------
         link: str
            An URL address to retrieve data from.
+
+        Returns:
+        -------  
+        data: DataFrame
+            A pandas dataFrame.
         '''
         data = tabula.read_pdf(link, pages="all")
         data = pd.concat(data)
@@ -65,6 +75,11 @@ class DataExtractor():
     def list_number_of_stores(self):
         '''
         Lists number of stores to retrieve data from.
+
+        Returns:
+        -------  
+        int
+            An integer with the number of stores to extract data from.
         '''
         response = requests.get(self.retrieve_number_stores_endpoint, headers=self.header)
         res_json = response.json()
@@ -74,6 +89,11 @@ class DataExtractor():
     def retrieve_stores_data(self):
         '''
         Retrieves data from API endpoint and turns it into a pandas DataFrame.
+
+        Returns:
+        -------  
+        stores_df: DataFrame
+            A pandas dataFrame.
         '''
         num_stores = self.list_number_of_stores()
         stores_data = []
@@ -97,7 +117,11 @@ class DataExtractor():
         ----------
         link: str
            An URL address to retrieve data from.
-
+        
+        Returns:
+        -------  
+        df: DataFrame
+            A pandas dataFrame.
         '''
         if 's3://' in link:
             #s3fs used by pandas to handle s3 files
@@ -106,6 +130,5 @@ class DataExtractor():
             df = pd.read_json(link)
 
         return df
-
 
 
